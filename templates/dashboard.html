@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SuperChat Dashboard</title>
+    <style>
+        body { font-family: sans-serif; display: flex; height: 100vh; margin: 0; }
+        nav { width: 250px; background: #f0f0f0; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+        main { flex: 1; padding: 20px; overflow-y: auto; }
+        .version { position: fixed; bottom: 10px; left: 10px; color: gray; font-size: 12px; }
+        a { display: block; margin: 10px 0; text-decoration: none; color: black; cursor: pointer; }
+        textarea, input { width: 90%; margin: 10px 0; padding: 10px; }
+        .chat-box { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; background: #f9f9f9; }
+        .msg { margin: 5px 0; }
+    </style>
+    <script>
+        function loadContent(section) {
+            const content = {
+                'ai': `<h2>AI Chat</h2>
+                    <div class="chat-box" id="ai-chat-box"></div>
+                    <input type="text" id="ai-input" placeholder="Ask the AI...">
+                    <button onclick="sendAIMessage()">Send</button>`,
+                'private': `<h2>Private Chat</h2>
+                    <div class="chat-box" id="private-chat-box"></div>
+                    <input type="text" id="private-input" placeholder="Send a private message...">
+                    <button onclick="sendPrivateMessage()">Send</button>`,
+                'international': `<h2>International Chat</h2>
+                    <div class="chat-box" id="intl-chat-box"></div>
+                    <input type="text" id="intl-input" placeholder="Say something to the world...">
+                    <button onclick="sendIntlMessage()">Send</button>`,
+                'notes': `<h2>Notes</h2>
+                    <textarea rows="10" placeholder="Write your notes here..."></textarea>`,
+                'tools': `<h2>Moderator Tools</h2>
+                    <ul>
+                        <li><button>Ban User</button></li>
+                        <li><button>Delete Message</button></li>
+                        <li><button>View Reports</button></li>
+                    </ul>`,
+                'settings': `<h2>Settings</h2>
+                    <label>Change Profile Picture:</label>
+                    <input type="file"><br>
+                    <label>Choose from Gallery:</label>
+                    <select>
+                        <option>Avatar 1</option>
+                        <option>Avatar 2</option>
+                        <option>Avatar 3</option>
+                    </select>`
+            };
+            document.getElementById('main').innerHTML = content[section];
+        }
+
+        function sendAIMessage() {
+            const input = document.getElementById('ai-input');
+            const box = document.getElementById('ai-chat-box');
+            const msg = input.value;
+            if (!msg) return;
+            box.innerHTML += `<div class="msg"><b>You:</b> ${msg}</div>`;
+            box.innerHTML += `<div class="msg"><b>AI:</b> [Response to '${msg}']</div>`;
+            input.value = "";
+        }
+
+        function sendPrivateMessage() {
+            const input = document.getElementById('private-input');
+            const box = document.getElementById('private-chat-box');
+            const msg = input.value;
+            if (!msg) return;
+            box.innerHTML += `<div class="msg"><b>You:</b> ${msg}</div>`;
+            input.value = "";
+        }
+
+        function sendIntlMessage() {
+            const input = document.getElementById('intl-input');
+            const box = document.getElementById('intl-chat-box');
+            const msg = input.value;
+            if (!msg) return;
+            box.innerHTML += `<div class="msg"><b>You:</b> ${msg}</div>`;
+            input.value = "";
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <h2>Welcome, {{ user }}</h2>
+        <a onclick="loadContent('ai')">AI Chat</a>
+        <a onclick="loadContent('private')">Private Chat</a>
+        <a onclick="loadContent('international')">International Chat</a>
+        <a onclick="loadContent('notes')">Notes</a>
+        <a onclick="loadContent('tools')">Moderator Tools</a>
+        <a onclick="loadContent('settings')">Settings</a>
+        <a href="/logout">Logout</a>
+        <div class="version">v0.03</div>
+    </nav>
+    <main id="main">
+        <h1>SuperChat Dashboard</h1>
+        <p>Select a feature from the sidebar.</p>
+    </main>
+</body>
+</html>
